@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tipografia Acessível (Uso de 'sp' para escalar com as definições do telemóvel) -->
+    <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="text_size_title">28sp</dimen>
+    <dimen name="text_size_hero">48sp</dimen> <!-- Gigante para mostrar a hora do medicamento -->
+
+    <!-- Zonas de Toque (Touch Targets - Acessibilidade Motora) -->
+    <dimen name="min_touch_target_height">64dp</dimen>
+
+    <!-- Espaçamentos e Margens -->
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="corner_radius">12dp</dimen> <!-- Para arredondar ligeiramente os cartões e botões -->
+</resources>
