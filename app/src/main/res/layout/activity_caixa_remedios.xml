@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
+
+    <!-- Título do Ecrã -->
+    <TextView
+        android:id="@+id/tvTituloCaixa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="Caixa de Remédios"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Lista de Medicamentos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMedicamentos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginBottom="@dimen/margin_standard"
+        tools:listitem="@layout/item_medicamento"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdicionarMed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloCaixa" />
+
+    <!-- Botão Amplo para Adicionar Medicamento -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdicionarMed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        android:backgroundTint="@color/action_success_green"
+        android:minHeight="@dimen/min_touch_target_height"
+        android:text="+ Adicionar Remédio"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

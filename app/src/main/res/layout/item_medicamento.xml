@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_large"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/corner_radius"
+    app:cardElevation="3dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_standard">
+
+        <!-- Ícone do Medicamento -->
+        <ImageView
+            android:id="@+id/ivIconeMed"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_medication"
+            app:tint="@color/action_primary_blue"
+            android:contentDescription="Ícone de medicamento"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Nome do Medicamento -->
+        <TextView
+            android:id="@+id/tvItemNomeMed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_standard"
+            android:layout_marginEnd="@dimen/margin_standard"
+            android:text="Ben-u-ron"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvItemHoraMed"
+            app:layout_constraintStart_toEndOf="@+id/ivIconeMed"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Dosagem / Instrução -->
+        <TextView
+            android:id="@+id/tvItemDoseMed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_standard"
+            android:layout_marginTop="4dp"
+            android:text="1 comprimido (1000mg)"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_normal"
+            app:layout_constraintEnd_toStartOf="@+id/tvItemHoraMed"
+            app:layout_constraintStart_toEndOf="@+id/ivIconeMed"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemNomeMed" />
+
+        <!-- Hora da Toma em Destaque -->
+        <TextView
+            android:id="@+id/tvItemHoraMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14:30"
+            android:textColor="@color/action_primary_blue"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
