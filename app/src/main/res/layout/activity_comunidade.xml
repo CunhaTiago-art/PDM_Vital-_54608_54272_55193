@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
+
+    <!-- Título do Ecrã -->
+    <TextView
+        android:id="@+id/tvTituloComunidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="Comunidade e Apoio"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Cartão: Historial Partilhado do Idoso -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardHistorial"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_standard"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/corner_radius"
+        app:cardElevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloComunidade">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_standard">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Historial de Adesão (Esta Semana)"
+                android:textColor="@color/text_secondary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvResumoHistorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="95% das tomas concluídas a horas"
+                android:textColor="@color/action_success_green"
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botão Amplo: Criar / Pedir Consulta -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCriarConsulta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:backgroundTint="@color/action_primary_blue"
+        android:minHeight="@dimen/min_touch_target_height"
+        android:text="Marcar Consulta / Apoio"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal"
+        android:textStyle="bold"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardHistorial" />
+
+    <!-- Lista de Chat / Mural de Dúvidas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMensagensComunidade"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginBottom="8dp"
+        tools:listitem="@layout/item_mensagem_comunidade"
+        app:layout_constraintBottom_toTopOf="@+id/layoutEnviarMensagem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCriarConsulta" />
+
+    <!-- Barra Inferior para Escrever Dúvida / Chat -->
+    <LinearLayout
+        android:id="@+id/layoutEnviarMensagem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/etEscreverDuvida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/background_light"
+            android:hint="Escrever dúvida..."
+            android:inputType="textMultiLine"
+            android:minHeight="@dimen/min_touch_target_height"
+            android:paddingHorizontal="@dimen/margin_standard"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviarDuvida"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/min_touch_target_height"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/action_success_green"
+            android:text="Enviar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/corner_radius" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
