@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_large">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Novo Medicamento"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Campo: Nome do Medicamento -->
+        <TextView
+            android:id="@+id/lblNomeMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="Nome do Remédio:"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTituloAdd" />
+
+        <EditText
+            android:id="@+id/etNomeMed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:hint="Ex: Ben-u-ron"
+            android:inputType="textCapWords"
+            android:minHeight="@dimen/min_touch_target_height"
+            android:padding="@dimen/margin_standard"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblNomeMed" />
+
+        <!-- Campo: Dosagem -->
+        <TextView
+            android:id="@+id/lblDoseMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="Dosagem / Instrução:"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNomeMed" />
+
+        <EditText
+            android:id="@+id/etDoseMed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:hint="Ex: 1 comprimido (1000mg)"
+            android:inputType="text"
+            android:minHeight="@dimen/min_touch_target_height"
+            android:padding="@dimen/margin_standard"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblDoseMed" />
+
+        <!-- Seletor de Hora (Modo Spinner é mais fácil para idosos do que relógio analógico) -->
+        <TextView
+            android:id="@+id/lblHoraMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="Hora da Toma:"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDoseMed" />
+
+        <TimePicker
+            android:id="@+id/timePickerMed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:timePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lblHoraMed" />
+
+        <!-- Botão Guardar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGuardarMed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:backgroundTint="@color/action_success_green"
+            android:minHeight="@dimen/min_touch_target_height"
+            android:text="Guardar Medicamento"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            app:cornerRadius="@dimen/corner_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timePickerMed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
