@@ -1,127 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
-    android:fillViewport="true">
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:id="@+id/scrollNovoMed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnGuardarMed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Botão Voltar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVoltarNovo"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:paddingStart="0dp"
+                android:text="‹  Voltar"
+                android:textAllCaps="false"
+                android:textColor="@color/vital_navy"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Novo medicamento"
+                android:textColor="@color/vital_navy"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- Campo: Nome -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Nome"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNomeMed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input_outline"
+                android:hint="Ex.: Metformina 500 mg"
+                android:inputType="textCapWords"
+                android:minHeight="56dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/vital_navy"
+                android:textColorHint="@color/vital_gray"
+                android:textSize="18sp" />
+
+            <!-- Quantidade por toma -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Quantidade por toma"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMenosDose"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    android:text="−"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/vital_navy"
+                    app:strokeWidth="2dp" />
+
+                <TextView
+                    android:id="@+id/tvQuantidadeDose"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="1 comprimido"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMaisDose"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    android:text="+"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/vital_navy"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
+
+            <!-- Horários -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Horários"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/layoutHorariosChips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnHoraExemplo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/vital_green"
+                    android:minHeight="48dp"
+                    android:paddingHorizontal="18dp"
+                    android:text="08:00  ×"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnAdicionarHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_foto_placeholder"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:paddingHorizontal="20dp"
+                android:text="+  Adicionar hora"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Dias da semana -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Dias da semana"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ToggleButton android:id="@+id/tbSeg" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="S" android:textOn="S" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbTer" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="T" android:textOn="T" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbQua" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="Q" android:textOn="Q" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbQui" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="Q" android:textOn="Q" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbSex" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="S" android:textOn="S" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbSab" android:layout_width="0dp" android:layout_height="44dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="S" android:textOn="S" android:textSize="16sp" android:textStyle="bold" />
+                <ToggleButton android:id="@+id/tbDom" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:background="@drawable/bg_dia_circulo" android:checked="true" android:textColor="@color/white" android:textOff="D" android:textOn="D" android:textSize="16sp" android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Por defeito: todos os dias"
+                android:textColor="@color/vital_gray"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão Fixo em Baixo: ✓ GUARDAR -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGuardarMed"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_large">
+        android:backgroundTint="@color/vital_green"
+        android:minHeight="68dp"
+        android:text="✓  GUARDAR"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:cornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Título -->
-        <TextView
-            android:id="@+id/tvTituloAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Novo Medicamento"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_title"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Campo: Nome do Medicamento -->
-        <TextView
-            android:id="@+id/lblNomeMed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="Nome do Remédio:"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTituloAdd" />
-
-        <EditText
-            android:id="@+id/etNomeMed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
-            android:hint="Ex: Ben-u-ron"
-            android:inputType="textCapWords"
-            android:minHeight="@dimen/min_touch_target_height"
-            android:padding="@dimen/margin_standard"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblNomeMed" />
-
-        <!-- Campo: Dosagem -->
-        <TextView
-            android:id="@+id/lblDoseMed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="Dosagem / Instrução:"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNomeMed" />
-
-        <EditText
-            android:id="@+id/etDoseMed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
-            android:hint="Ex: 1 comprimido (1000mg)"
-            android:inputType="text"
-            android:minHeight="@dimen/min_touch_target_height"
-            android:padding="@dimen/margin_standard"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblDoseMed" />
-
-        <!-- Seletor de Hora (Modo Spinner é mais fácil para idosos do que relógio analógico) -->
-        <TextView
-            android:id="@+id/lblHoraMed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="Hora da Toma:"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etDoseMed" />
-
-        <TimePicker
-            android:id="@+id/timePickerMed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:timePickerMode="spinner"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lblHoraMed" />
-
-        <!-- Botão Guardar -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGuardarMed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:backgroundTint="@color/action_success_green"
-            android:minHeight="@dimen/min_touch_target_height"
-            android:text="Guardar Medicamento"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_title"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/corner_radius"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timePickerMed" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
