@@ -1,134 +1,397 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/white"
+    android:fillViewport="true">
 
-    <!-- Título do Ecrã -->
-    <TextView
-        android:id="@+id/tvTituloComunidade"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
-        android:text="Comunidade e Apoio"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/text_size_title"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:padding="@dimen/margin_standard">
 
-    <!-- Cartão: Historial Partilhado do Idoso -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardHistorial"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_standard"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:cardElevation="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTituloComunidade">
+        <!-- Botão Voltar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVoltarComunidade"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingStart="0dp"
+            android:text="‹  Voltar"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Comunidade"
+            android:textColor="@color/vital_navy"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <!-- Cartão: A CUIDAR DE + Membros -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/vital_green"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Foto + Nome do Idoso -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvFotoIdoso"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_foto_circulo"
+                        android:gravity="center"
+                        android:text="foto"
+                        android:textColor="@color/vital_gray"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.05"
+                            android:text="A CUIDAR DE"
+                            android:textColor="@color/vital_green"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvNomeIdoso"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="[Nome do idoso]"
+                            android:textColor="@color/vital_navy"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Linha 1 de Membros -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Membros:"
+                        android:textColor="@color/vital_gray"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_chip_membro"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
+                        android:text="Filha"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip_membro"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
+                        android:text="Neto"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Linha 2 de Membros + Botão Convidar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_chip_membro"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
+                        android:text="Enfermeiro"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btnConvidarMembro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_chip_convidar"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="6dp"
+                        android:text="+ Convidar"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Grelha 2x2: Linha Superior (Historial e Consultas) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/margin_standard">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Historial de Adesão (Esta Semana)"
-                android:textColor="@color/text_secondary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            <!-- Cartão: Historial -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHistorial"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/vital_navy"
+                app:strokeWidth="2dp">
 
-            <TextView
-                android:id="@+id/tvResumoHistorial"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="95% das tomas concluídas a horas"
-                android:textColor="@color/action_success_green"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="Historial"
+                        android:src="@drawable/ic_history"
+                        app:tint="@color/vital_navy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Historial"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="Tomas e notas"
+                        android:textColor="@color/vital_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cartão: Consultas -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardConsultas"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/vital_navy"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="Consultas"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/vital_navy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Consultas"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvResumoConsultas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="1 próxima"
+                        android:textColor="@color/vital_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <!-- Botão Amplo: Criar / Pedir Consulta -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCriarConsulta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:backgroundTint="@color/action_primary_blue"
-        android:minHeight="@dimen/min_touch_target_height"
-        android:text="Marcar Consulta / Apoio"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_normal"
-        android:textStyle="bold"
-        app:cornerRadius="@dimen/corner_radius"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardHistorial" />
-
-    <!-- Lista de Chat / Mural de Dúvidas -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMensagensComunidade"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:layout_marginBottom="8dp"
-        tools:listitem="@layout/item_mensagem_comunidade"
-        app:layout_constraintBottom_toTopOf="@+id/layoutEnviarMensagem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCriarConsulta" />
-
-    <!-- Barra Inferior para Escrever Dúvida / Chat -->
-    <LinearLayout
-        android:id="@+id/layoutEnviarMensagem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <EditText
-            android:id="@+id/etEscreverDuvida"
-            android:layout_width="0dp"
+        <!-- Grelha 2x2: Linha Inferior (Chat e Dúvidas e ajuda) -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/background_light"
-            android:hint="Escrever dúvida..."
-            android:inputType="textMultiLine"
-            android:minHeight="@dimen/min_touch_target_height"
-            android:paddingHorizontal="@dimen/margin_standard"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_normal" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEnviarDuvida"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/min_touch_target_height"
-            android:layout_marginStart="8dp"
-            android:backgroundTint="@color/action_success_green"
-            android:text="Enviar"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/corner_radius" />
+            <!-- Cartão: Chat -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardChat"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/vital_navy"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="Chat"
+                        android:src="@drawable/ic_chat"
+                        app:tint="@color/vital_navy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Chat"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMensagensNovas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="2 mensagens\nnovas"
+                        android:textColor="@color/vital_green"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cartão: Dúvidas e ajuda -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDuvidas"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/vital_navy"
+                app:strokeWidth="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="Dúvidas e ajuda"
+                        android:src="@drawable/ic_help"
+                        app:tint="@color/vital_navy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="Dúvidas e\najuda"
+                        android:textColor="@color/vital_navy"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="Resolver\nproblemas"
+                        android:textColor="@color/vital_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
