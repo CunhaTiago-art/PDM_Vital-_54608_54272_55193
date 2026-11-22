@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
+
+    <ScrollView
+        android:id="@+id/scrollEntrada"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/btnEntrarApp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="32dp">
+
+            <!-- Logótipo Vital+ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                app:cardBackgroundColor="@color/vital_green"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="+"
+                    android:textColor="@color/white"
+                    android:textSize="54sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Vital+"
+                android:textColor="@color/vital_navy"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="A sua medicação e apoio familiar,\nsempre à mão."
+                android:textColor="@color/vital_gray"
+                android:textSize="18sp" />
+
+            <!-- Seleção de Perfil -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Quem vai usar este telemóvel?"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPerfilIdoso"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/vital_green"
+                    android:text="✓  Idoso"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPerfilCuidador"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Cuidador"
+                    android:textAllCaps="false"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp"
+                    app:strokeColor="@color/vital_navy"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
+
+            <!-- Campo: Nome -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="O seu nome"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNomeUtilizador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input_outline"
+                android:hint="Ex.: Maria ou João"
+                android:inputType="textPersonName|textCapWords"
+                android:minHeight="60dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/vital_navy"
+                android:textColorHint="@color/vital_gray"
+                android:textSize="20sp" />
+
+            <!-- Campo Opcional: Código de Família (para ligar à Comunidade) -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Código da família (opcional)"
+                android:textColor="@color/vital_navy"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etCodigoFamilia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_input_outline"
+                android:hint="Ex.: VITAL-2026"
+                android:inputType="textCapCharacters"
+                android:minHeight="60dp"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/vital_navy"
+                android:textColorHint="@color/vital_gray"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão Principal: ENTRAR -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEntrarApp"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:backgroundTint="@color/vital_green"
+        android:text="ENTRAR"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
