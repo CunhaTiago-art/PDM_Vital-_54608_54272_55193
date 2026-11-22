@@ -13,4 +13,11 @@
     <color name="action_success_green">#28A745</color> <!-- Para confirmar toma do remédio -->
     <color name="action_sos_red">#DC3545</color> <!-- Específico para o botão SOS -->
     <color name="action_primary_blue">#0D6EFD</color> <!-- Para navegação e destaques -->
+
+    <!-- Paleta do Mockup Vital+ -->
+    <color name="vital_green">#0A7C59</color>
+    <color name="vital_navy">#0F172A</color>
+    <color name="vital_red">#B91C1C</color>
+    <color name="vital_gray">#475569</color>
+    <color name="vital_divider">#E2E8F0</color>
 </resources>

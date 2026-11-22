@@ -6,106 +6,219 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard"
     tools:context=".MainActivity">
 
-    <!-- Saudação (Topo) -->
+    <!-- Cabeçalho: Ícone + Vital+ e Data -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLogoIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:cardBackgroundColor="@color/vital_green"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
-        android:id="@+id/tvSaudacao"
+        android:id="@+id/tvLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
-        android:text="Bom dia, João!"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/text_size_title"
+        android:layout_marginStart="10dp"
+        android:text="Vital+"
+        android:textColor="@color/vital_navy"
+        android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/cardLogoIcon"
+        app:layout_constraintStart_toEndOf="@+id/cardLogoIcon"
+        app:layout_constraintTop_toTopOf="@+id/cardLogoIcon" />
 
-    <!-- Cartão de Destaque: Próxima Toma -->
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/tvDataHoje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qui, 19 nov"
+        android:textColor="@color/vital_gray"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardLogoIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardLogoIcon" />
+
+    <!-- Cartão: PRÓXIMA TOMA -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardProximaToma"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_large"
+        android:layout_marginTop="16dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/vital_green"
+        app:strokeWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSaudacao">
+        app:layout_constraintTop_toBottomOf="@+id/cardLogoIcon">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/margin_large">
+            android:padding="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Próximo Medicamento"
-                android:textColor="@color/text_secondary"
-                android:textSize="@dimen/text_size_normal" />
+                android:letterSpacing="0.05"
+                android:text="PRÓXIMA TOMA"
+                android:textColor="@color/vital_green"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <!-- Hora em tamanho Gigante -->
             <TextView
                 android:id="@+id/tvHoraToma"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="14:30"
-                android:textColor="@color/text_primary"
+                android:text="14:00"
+                android:textColor="@color/vital_navy"
                 android:textSize="@dimen/text_size_hero"
                 android:textStyle="bold" />
 
-            <!-- Nome do Remédio bem visível -->
             <TextView
                 android:id="@+id/tvNomeRemedio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Ben-u-ron 1000mg"
-                android:textColor="@color/action_primary_blue"
-                android:textSize="@dimen/text_size_title"
+                android:text="Metformina 500 mg"
+                android:textColor="@color/vital_navy"
+                android:textSize="24sp"
                 android:textStyle="bold" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <!-- Botão SOS Gigante (Contacto Rápido) -->
+            <TextView
+                android:id="@+id/tvInstrucaoRemedio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="1 comprimido · com o almoço"
+                android:textColor="@color/vital_gray"
+                android:textSize="18sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnJaTomeiDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/vital_green"
+                android:minHeight="@dimen/min_touch_target_height"
+                android:text="✓  JÁ TOMEI"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Secção: Hoje -->
+    <TextView
+        android:id="@+id/tvTituloHoje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Hoje"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardProximaToma" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTomasHoje"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        tools:listitem="@layout/item_toma_hoje"
+        app:layout_constraintBottom_toTopOf="@+id/btnComunidade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloHoje" />
+
+    <!-- Atalho 1: Botão Comunidade -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSos"
+        android:id="@+id/btnComunidade"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_large"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/action_sos_red"
-        android:minHeight="@dimen/min_touch_target_height"
-        android:text="SOS"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_title"
+        android:layout_marginBottom="10dp"
+        android:minHeight="60dp"
+        android:text="Comunidade"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_green"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:cornerRadius="@dimen/corner_radius"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:cornerRadius="14dp"
+        app:icon="@drawable/ic_community"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconSize="26dp"
+        app:iconTint="@color/vital_green"
+        app:strokeColor="@color/vital_green"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBotoesInferiores"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Barra de Navegação Inferior (Linear e Simples) -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <!-- Atalhos 2 e 3: Caixa de Remédios e SOS -->
+    <LinearLayout
+        android:id="@+id/layoutBotoesInferiores"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="72dp"
-        android:background="@color/white"
-        app:itemIconSize="32dp"
-        app:itemIconTint="@color/action_primary_blue"
-        app:itemTextColor="@color/text_primary"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAbrirCaixa"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1.8"
+            android:gravity="start|center_vertical"
+            android:text="Caixa de\nRemédios"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_medication"
+            app:iconPadding="12dp"
+            app:iconSize="28dp"
+            app:iconTint="@color/vital_navy"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSos"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/vital_red"
+            android:text="SOS"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
