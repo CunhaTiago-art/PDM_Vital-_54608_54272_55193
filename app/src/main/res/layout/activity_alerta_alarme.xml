@@ -4,113 +4,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/action_primary_blue"
+    android:background="@color/vital_green"
     android:padding="@dimen/margin_large">
 
-    <!-- Cabeçalho de Alerta -->
-    <TextView
-        android:id="@+id/tvTituloAlerta"
+    <!-- Cabeçalho: Sino + HORA DA MEDICAÇÃO -->
+    <LinearLayout
+        android:id="@+id/layoutHeaderAlerta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="HORA DO MEDICAMENTO!"
-        android:textAlignment="center"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Alarme"
+            android:src="@drawable/ic_bell"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvTituloAlerta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
+            android:text="HORA DA MEDICAÇÃO"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Hora em tamanho gigante -->
+    <TextView
+        android:id="@+id/tvAlertaHora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="14:00"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_title"
+        android:textSize="64sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutHeaderAlerta" />
 
-    <!-- Cartão Central com Detalhes da Toma -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardDetalheAlerta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_large"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="@dimen/corner_radius"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarToma"
+    <!-- Caixa: foto do medicamento -->
+    <TextView
+        android:id="@+id/tvFotoMedicamentoAlerta"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_foto_placeholder_white"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="foto do\nmedicamento"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTituloAlerta">
+        app:layout_constraintTop_toBottomOf="@+id/tvAlertaHora" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/margin_large">
+    <!-- Nome do Medicamento -->
+    <TextView
+        android:id="@+id/tvAlertaNomeMed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Metformina 500\nmg"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFotoMedicamentoAlerta" />
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_medication"
-                app:tint="@color/action_primary_blue"
-                android:contentDescription="Ícone de comprimido" />
+    <!-- Dosagem e Instrução -->
+    <TextView
+        android:id="@+id/tvAlertaDoseMed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="1 comprimido · com o almoço"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAlertaNomeMed" />
 
-            <TextView
-                android:id="@+id/tvAlertaHora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="14:30"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/text_size_hero"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvAlertaNomeMed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Ben-u-ron"
-                android:textAlignment="center"
-                android:textColor="@color/action_primary_blue"
-                android:textSize="@dimen/text_size_title"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvAlertaDoseMed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Tomar 1 comprimido (1000mg)"
-                android:textAlignment="center"
-                android:textColor="@color/text_secondary"
-                android:textSize="@dimen/text_size_normal" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Botão Gigante: Confirmar Toma -->
+    <!-- Botão Principal: ✓ JÁ TOMEI (Branco com texto verde) -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirmarToma"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="@dimen/margin_standard"
-        android:backgroundTint="@color/action_success_green"
-        android:text="JÁ TOMEI"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_title"
+        android:layout_height="76dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/white"
+        android:text="✓  JÁ TOMEI"
+        android:textColor="@color/vital_green"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:cornerRadius="@dimen/corner_radius"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toTopOf="@+id/btnAdiarToma"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Botão Secundário: Adiar 10 minutos -->
+    <!-- Botão Secundário: ADIAR 10 MINUTOS (Contorno branco) -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAdiarToma"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="@dimen/min_touch_target_height"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/white"
-        android:text="Lembrar daqui a 10 min"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/text_size_normal"
+        android:layout_height="64dp"
+        android:text="ADIAR 10 MINUTOS"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:cornerRadius="@dimen/corner_radius"
+        app:cornerRadius="16dp"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
