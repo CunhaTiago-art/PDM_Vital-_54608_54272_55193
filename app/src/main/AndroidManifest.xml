@@ -21,6 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CaixaRemediosActivity" android:exported="false" />
+        <activity android:name=".AdicionarRemedioActivity" android:exported="false" />
+        <activity android:name=".AlertaAlarmeActivity" android:exported="false" />
+        <activity android:name=".EmergenciaActivity" android:exported="false" />
+        <activity android:name=".ComunidadeActivity" android:exported="false" />
+        <activity android:name=".HistorialActivity" android:exported="false" />
+        <activity android:name=".ConsultasActivity" android:exported="false" />
+        <activity android:name=".MarcarConsultaActivity" android:exported="false" />
+        <activity android:name=".ChatFamiliaActivity" android:exported="false" />
+        <activity android:name=".DuvidasActivity" android:exported="false" />
     </application>
 
 </manifest>
