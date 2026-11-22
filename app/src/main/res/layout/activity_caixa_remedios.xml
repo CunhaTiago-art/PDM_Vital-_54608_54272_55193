@@ -5,48 +5,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
 
-    <!-- Título do Ecrã -->
-    <TextView
-        android:id="@+id/tvTituloCaixa"
+    <!-- Botão Voltar (sem borda) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVoltarCaixa"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
-        android:text="Caixa de Remédios"
-        android:textColor="@color/text_primary"
-        android:textSize="@dimen/text_size_title"
+        android:minHeight="48dp"
+        android:paddingStart="0dp"
+        android:text="‹  Voltar"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Lista de Medicamentos -->
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloCaixa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Caixa de Remédios"
+        android:textColor="@color/vital_navy"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnVoltarCaixa" />
+
+    <!-- Lista de Prescrições (RecyclerView + Room) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMedicamentos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:layout_marginBottom="@dimen/margin_standard"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         tools:listitem="@layout/item_medicamento"
         app:layout_constraintBottom_toTopOf="@+id/btnAdicionarMed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTituloCaixa" />
 
-    <!-- Botão Amplo para Adicionar Medicamento -->
+    <!-- Botão Fixo em Baixo: + Adicionar medicamento -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAdicionarMed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_large"
-        android:backgroundTint="@color/action_success_green"
-        android:minHeight="@dimen/min_touch_target_height"
-        android:text="+ Adicionar Remédio"
+        android:backgroundTint="@color/vital_green"
+        android:gravity="start|center_vertical"
+        android:minHeight="72dp"
+        android:paddingHorizontal="20dp"
+        android:text="+   Adicionar\n     medicamento"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_title"
+        android:textSize="22sp"
         android:textStyle="bold"
-        app:cornerRadius="@dimen/corner_radius"
+        app:cornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
