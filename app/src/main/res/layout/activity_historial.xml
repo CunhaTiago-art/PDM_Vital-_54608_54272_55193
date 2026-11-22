@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
+
+    <!-- Botão Voltar -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVoltarHistorial"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:paddingStart="0dp"
+        android:text="‹  Voltar"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloHistorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Historial"
+        android:textColor="@color/vital_navy"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnVoltarHistorial" />
+
+    <!-- Cartão: Resumo Semanal -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardResumoSemanal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/vital_gray"
+        app:strokeWidth="1.5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloHistorial">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <!-- Cabeçalho do Resumo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Esta semana"
+                    android:textColor="@color/vital_gray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalTomasSemana"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18 de 21 tomas"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- 7 Dias da Semana -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <!-- Segunda -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaSeg" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_completo" android:gravity="center" android:text="3" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="S" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Terça -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaTer" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_completo" android:gravity="center" android:text="3" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="T" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Quarta (falhou alguma) -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaQua" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_falhado" android:gravity="center" android:text="2" android:textColor="@color/vital_navy" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Q" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Quinta -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaQui" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_completo" android:gravity="center" android:text="3" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Q" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Sexta -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaSex" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_completo" android:gravity="center" android:text="3" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="S" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Sábado (falhou alguma) -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaSab" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_falhado" android:gravity="center" android:text="2" android:textColor="@color/vital_navy" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="S" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Domingo -->
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                    <TextView android:id="@+id/tvDiaDom" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/bg_dia_completo" android:gravity="center" android:text="2" android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="D" android:textColor="@color/vital_gray" android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Legenda -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Preenchido = todas tomadas · Contorno = falhou alguma"
+                android:textColor="@color/vital_gray"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Filtros: Tudo | Tomas | Consultas -->
+    <LinearLayout
+        android:id="@+id/layoutFiltrosHistorial"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardResumoSemanal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFiltroTudo"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/vital_navy"
+            android:paddingHorizontal="4dp"
+            android:text="Tudo"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFiltroTomas"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="4dp"
+            android:text="Tomas"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFiltroConsultas"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="4dp"
+            android:text="Consultas"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <!-- Lista de Historial -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistorial"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="10dp"
+        tools:listitem="@layout/item_historial"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdicionarNota"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutFiltrosHistorial" />
+
+    <!-- Botão Fixo em Baixo: + Adicionar nota -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdicionarNota"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:backgroundTint="@color/white"
+        android:text="+  Adicionar nota"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="14dp"
+        app:strokeColor="@color/vital_navy"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
