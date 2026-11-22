@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
+
+    <!-- Botão Voltar -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVoltarChat"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:paddingStart="0dp"
+        android:text="‹  Voltar"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Chat da família"
+        android:textColor="@color/vital_navy"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnVoltarChat" />
+
+    <!-- Subtítulo: Membros -->
+    <TextView
+        android:id="@+id/tvMembrosChat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Filha, Neto, Enfermeiro e [Idoso]"
+        android:textColor="@color/vital_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloChat" />
+
+    <!-- Linha Divisória -->
+    <View
+        android:id="@+id/dividerChat"
+        android:layout_width="0dp"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/vital_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMembrosChat" />
+
+    <!-- Lista de Mensagens -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChatMensagens"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="12dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_chat_recebido"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBarraEnvio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividerChat" />
+
+    <!-- Barra Inferior: Escrever + Microfone + Enviar -->
+    <LinearLayout
+        android:id="@+id/layoutBarraEnvio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/etMensagemChat"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input_outline"
+            android:hint="Escrever mensagem..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/vital_navy"
+            android:textColorHint="@color/vital_gray"
+            android:textSize="18sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVozChat"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Mensagem de voz"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_mic"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="26dp"
+            app:iconTint="@color/vital_navy"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviarChat"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/vital_green"
+            android:contentDescription="Enviar mensagem"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_send"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/white" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
