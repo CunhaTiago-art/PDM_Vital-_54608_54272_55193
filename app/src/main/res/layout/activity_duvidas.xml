@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/margin_standard">
+
+    <!-- Botão Voltar -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVoltarDuvidas"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:paddingStart="0dp"
+        android:text="‹  Voltar"
+        android:textAllCaps="false"
+        android:textColor="@color/vital_navy"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloDuvidas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Dúvidas e ajuda"
+        android:textColor="@color/vital_navy"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnVoltarDuvidas" />
+
+    <!-- Campo de Pesquisa -->
+    <EditText
+        android:id="@+id/etPesquisarDuvida"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_outline"
+        android:hint="Pesquisar uma dúvida..."
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/vital_navy"
+        android:textColorHint="@color/vital_gray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTituloDuvidas" />
+
+    <!-- Categorias: Linha 1 (Todas | Alarmes) -->
+    <LinearLayout
+        android:id="@+id/layoutCatLinha1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPesquisarDuvida">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCatTodas"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/vital_navy"
+            android:paddingHorizontal="20dp"
+            android:text="Todas"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCatAlarmes"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:paddingHorizontal="20dp"
+            android:text="Alarmes"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <!-- Categorias: Linha 2 (Medicação | Usar a app) -->
+    <LinearLayout
+        android:id="@+id/layoutCatLinha2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutCatLinha1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCatMedicacao"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:paddingHorizontal="20dp"
+            android:text="Medicação"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCatUsarApp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:paddingHorizontal="20dp"
+            android:text="Usar a app"
+            android:textAllCaps="false"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/vital_navy"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <!-- Lista de Perguntas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDuvidas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"
+        tools:listitem="@layout/item_duvida"
+        app:layout_constraintBottom_toTopOf="@+id/tvAvisoMedico"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutCatLinha2" />
+
+    <!-- Aviso de Segurança (Contorno tracejado) -->
+    <TextView
+        android:id="@+id/tvAvisoMedico"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_foto_placeholder"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Dúvidas sobre medicação não substituem o médico ou farmacêutico."
+        android:textColor="@color/vital_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnFazerPergunta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Botão Fixo em Baixo: + Fazer uma pergunta -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFazerPergunta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/vital_green"
+        android:minHeight="68dp"
+        android:text="+  Fazer uma pergunta"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:cornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
