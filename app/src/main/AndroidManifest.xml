@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Necessária apenas para a sincronização do chat e das dúvidas.
+         Os dados clínicos nunca saem do aparelho. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".VitalApp"
         android:allowBackup="true"

@@ -33,6 +33,10 @@ public interface MembroDao {
     @Query("SELECT * FROM membros WHERE papel = 'IDOSO' LIMIT 1")
     LiveData<Membro> observarIdoso();
 
+    /** Versão síncrona, para preparar a sessão fora da thread principal. */
+    @Query("SELECT * FROM membros WHERE papel = 'IDOSO' LIMIT 1")
+    Membro obterIdoso();
+
     @Query("SELECT * FROM membros WHERE id = :id")
     Membro obterPorId(long id);
 
@@ -53,4 +57,16 @@ public interface MembroDao {
 
     @Query("SELECT COUNT(*) FROM membros WHERE papel <> 'IDOSO'")
     LiveData<Integer> contarRede();
+
+    // ---------- Apoio à sincronização ----------
+
+    /** Encontra o membro pela identidade global, para reconhecer autores vindos da nuvem. */
+    @Query("SELECT * FROM membros WHERE uidRemoto = :uid LIMIT 1")
+    Membro obterPorUid(String uid);
+
+    @Query("SELECT * FROM membros WHERE nome = :nome LIMIT 1")
+    Membro obterPorNome(String nome);
+
+    @Query("UPDATE membros SET uidRemoto = :uid WHERE id = :id")
+    void definirUid(long id, String uid);
 }

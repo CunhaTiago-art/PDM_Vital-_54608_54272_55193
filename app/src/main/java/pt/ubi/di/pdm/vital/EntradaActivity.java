@@ -1,13 +1,14 @@
 package pt.ubi.di.pdm.vital;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.button.MaterialButton;
+
+import pt.ubi.di.pdm.vital.data.SessionManager;
 
 public class EntradaActivity extends AppCompatActivity {
 
@@ -21,6 +22,7 @@ public class EntradaActivity extends AppCompatActivity {
         MaterialButton btnIdoso = findViewById(R.id.btnPerfilIdoso);
         MaterialButton btnCuidador = findViewById(R.id.btnPerfilCuidador);
         EditText etNome = findViewById(R.id.etNomeUtilizador);
+        EditText etCodigo = findViewById(R.id.etCodigoFamilia);
         MaterialButton btnEntrar = findViewById(R.id.btnEntrarApp);
 
         btnIdoso.setOnClickListener(v -> {
@@ -39,11 +41,19 @@ public class EntradaActivity extends AppCompatActivity {
                 nome = perfilSelecionado;
             }
 
-            SharedPreferences prefs = getSharedPreferences("VitalPlusPrefs", MODE_PRIVATE);
-            prefs.edit()
-                    .putString("utilizador_nome", nome)
-                    .putString("utilizador_perfil", perfilSelecionado)
-                    .apply();
+            SessionManager sessao = new SessionManager(this);
+            sessao.guardarPerfil(nome, perfilSelecionado);
+
+            VitalApp app = (VitalApp) getApplication();
+            String codigo = etCodigo.getText().toString().trim();
+
+            // A identidade local é criada sempre, haja nuvem ou não.
+            app.getRepositorio().prepararSessao(null);
+
+            if (!codigo.isEmpty()) {
+                // Com código de família, as mensagens passam também a ser partilhadas.
+                app.getSincronizacao().entrarNaFamilia(codigo);
+            }
 
             startActivity(new Intent(this, MainActivity.class));
             finish();

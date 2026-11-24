@@ -48,6 +48,10 @@ public interface ComunidadeDao {
     @Query("SELECT * FROM duvidas WHERE id = :id")
     LiveData<Duvida> observarDuvida(long id);
 
+    /** Versão síncrona, usada pela sincronização fora da thread principal. */
+    @Query("SELECT * FROM duvidas WHERE id = :id")
+    Duvida obterDuvidaPorId(long id);
+
     @Query("UPDATE duvidas SET resolvida = 1 WHERE id = :id")
     void marcarResolvida(long id);
 
@@ -75,4 +79,29 @@ public interface ComunidadeDao {
 
     @Query("SELECT * FROM notas ORDER BY dataHora DESC LIMIT :limite")
     LiveData<List<Nota>> observarNotasRecentes(int limite);
+
+    // ---------- Apoio à sincronização ----------
+    // As notas ficam de fora de propósito: são observações sobre o idoso
+    // deixadas no historial, por isso contam como dados clínicos e não saem do aparelho.
+
+    @Query("SELECT * FROM duvidas WHERE sincronizado = 0 ORDER BY dataHora ASC")
+    List<Duvida> listarDuvidasPorSincronizar();
+
+    @Query("SELECT * FROM duvidas WHERE idRemoto = :idRemoto LIMIT 1")
+    Duvida obterDuvidaPorIdRemoto(String idRemoto);
+
+    @Query("UPDATE duvidas SET sincronizado = 1, idRemoto = :idRemoto WHERE id = :id")
+    void marcarDuvidaSincronizada(long id, String idRemoto);
+
+    @Query("SELECT * FROM respostas WHERE sincronizado = 0 ORDER BY dataHora ASC")
+    List<Resposta> listarRespostasPorSincronizar();
+
+    @Query("SELECT * FROM respostas WHERE idRemoto = :idRemoto LIMIT 1")
+    Resposta obterRespostaPorIdRemoto(String idRemoto);
+
+    @Query("UPDATE respostas SET sincronizado = 1, idRemoto = :idRemoto WHERE id = :id")
+    void marcarRespostaSincronizada(long id, String idRemoto);
+
+    @Update
+    void atualizarResposta(Resposta resposta);
 }

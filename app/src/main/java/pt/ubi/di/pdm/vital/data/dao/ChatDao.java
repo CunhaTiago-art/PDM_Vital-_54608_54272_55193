@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -39,4 +40,23 @@ public interface ChatDao {
             + "INNER JOIN membros mem ON mem.id = m.autorId "
             + "ORDER BY m.dataHora DESC LIMIT 1")
     LiveData<MensagemComAutor> observarUltima();
+
+    // ---------- Apoio à sincronização ----------
+
+    @Update
+    void atualizar(MensagemChat mensagem);
+
+    /** Mensagens escritas neste telemóvel que ainda não subiram para a nuvem. */
+    @Query("SELECT * FROM mensagens_chat WHERE sincronizado = 0 ORDER BY dataHora ASC")
+    List<MensagemChat> listarPorSincronizar();
+
+    /** Evita inserir duas vezes a mesma mensagem quando ela chega da nuvem. */
+    @Query("SELECT * FROM mensagens_chat WHERE idRemoto = :idRemoto LIMIT 1")
+    MensagemChat obterPorIdRemoto(String idRemoto);
+
+    @Query("UPDATE mensagens_chat SET sincronizado = 1, idRemoto = :idRemoto WHERE id = :id")
+    void marcarSincronizada(long id, String idRemoto);
+
+    @Query("SELECT COUNT(*) FROM mensagens_chat WHERE sincronizado = 0")
+    LiveData<Integer> contarPorSincronizar();
 }

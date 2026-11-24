@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852858085007",
+    "project_id": "vital--pdm",
+    "storage_bucket": "vital--pdm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852858085007:android:65a34a335c13eabfa65afa",
+        "android_client_info": {
+          "package_name": "pt.ubi.di.pdm.vital"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhZcZaEdEl8nE4ybktxkzAlIXXOA-gWmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

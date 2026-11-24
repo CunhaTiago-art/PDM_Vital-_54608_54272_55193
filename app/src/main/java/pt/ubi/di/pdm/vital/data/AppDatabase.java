@@ -8,6 +8,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
@@ -48,7 +49,7 @@ import pt.ubi.di.pdm.vital.data.model.Resposta;
                 Resposta.class,
                 Nota.class
         },
-        version = 1,
+        version = 2,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -70,6 +71,48 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ComunidadeDao comunidadeDao();
 
+    /**
+     * v1 -> v2: prepara a sincronização do chat e das dúvidas com a nuvem.
+     * Acrescenta as colunas novas sem apagar nada do que já está no telemóvel —
+     * quem tiver a app instalada mantém o historial de tomas e as consultas.
+     */
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            // Identidade global de cada pessoa (uid da autenticação anónima do Firebase)
+            db.execSQL("ALTER TABLE `membros` ADD COLUMN `uidRemoto` TEXT");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_membros_uidRemoto` "
+                    + "ON `membros` (`uidRemoto`)");
+
+            // Mensagens de chat
+            db.execSQL("ALTER TABLE `mensagens_chat` ADD COLUMN `idRemoto` TEXT");
+            db.execSQL("ALTER TABLE `mensagens_chat` ADD COLUMN `sincronizado` "
+                    + "INTEGER NOT NULL DEFAULT 0");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_mensagens_chat_idRemoto` "
+                    + "ON `mensagens_chat` (`idRemoto`)");
+
+            // Dúvidas
+            db.execSQL("ALTER TABLE `duvidas` ADD COLUMN `idRemoto` TEXT");
+            db.execSQL("ALTER TABLE `duvidas` ADD COLUMN `sincronizado` "
+                    + "INTEGER NOT NULL DEFAULT 0");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_duvidas_idRemoto` "
+                    + "ON `duvidas` (`idRemoto`)");
+
+            // Respostas
+            db.execSQL("ALTER TABLE `respostas` ADD COLUMN `idRemoto` TEXT");
+            db.execSQL("ALTER TABLE `respostas` ADD COLUMN `sincronizado` "
+                    + "INTEGER NOT NULL DEFAULT 0");
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_respostas_idRemoto` "
+                    + "ON `respostas` (`idRemoto`)");
+
+            // Tudo o que já estava no telemóvel é historial local anterior à nuvem:
+            // fica marcado como sincronizado para não ser enviado retroativamente.
+            db.execSQL("UPDATE `mensagens_chat` SET `sincronizado` = 1");
+            db.execSQL("UPDATE `duvidas` SET `sincronizado` = 1");
+            db.execSQL("UPDATE `respostas` SET `sincronizado` = 1");
+        }
+    };
+
     /** Executor partilhado por toda a app para as escritas fora da thread principal. */
     public static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
@@ -83,6 +126,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     context.getApplicationContext(),
                                     AppDatabase.class,
                                     NOME_BD)
+                            .addMigrations(MIGRATION_1_2)
                             .addCallback(SEED)
                             .build();
                 }

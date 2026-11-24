@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -45,6 +46,12 @@ dependencies {
     // LiveData / ViewModel - observacao reativa das tabelas
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.viewmodel)
+    implementation(libs.recyclerview)
+
+    // Firebase - so para o chat e as duvidas; os dados clinicos nao saem do aparelho
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

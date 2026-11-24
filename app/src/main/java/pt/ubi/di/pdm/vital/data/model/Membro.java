@@ -9,7 +9,8 @@ import androidx.room.PrimaryKey;
  * Alimenta os ecrãs Comunidade (lista de membros), Chat da família (autor das mensagens)
  * e Emergência (contactos ordenados).
  */
-@Entity(tableName = "membros", indices = {@Index("ordemEmergencia")})
+@Entity(tableName = "membros",
+        indices = {@Index("ordemEmergencia"), @Index(value = "uidRemoto", unique = true)})
 public class Membro {
 
     @PrimaryKey(autoGenerate = true)
@@ -17,6 +18,14 @@ public class Membro {
 
     private String nome;
     private PapelMembro papel;
+    /**
+     * Identificador global desta pessoa, dado pela autenticação anónima do Firebase.
+     * É o que permite reconhecer o mesmo autor em telemóveis diferentes: o id local
+     * muda de aparelho para aparelho, este não. Null enquanto a pessoa não tiver
+     * instalado a app no telemóvel dela.
+     */
+    private String uidRemoto;
+
     private String telefone;          // opcional, pode ser null
     private String fotoUri;           // opcional, pode ser null
 
@@ -37,6 +46,9 @@ public class Membro {
 
     public PapelMembro getPapel() { return papel; }
     public void setPapel(PapelMembro papel) { this.papel = papel; }
+
+    public String getUidRemoto() { return uidRemoto; }
+    public void setUidRemoto(String uidRemoto) { this.uidRemoto = uidRemoto; }
 
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }

@@ -1,5 +1,6 @@
 package pt.ubi.di.pdm.vital.data.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -7,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 /** Mensagem do Chat da família, guardada localmente para funcionar offline. */
 @Entity(tableName = "mensagens_chat",
-        indices = {@Index("autorId"), @Index("dataHora")},
+        indices = {@Index("autorId"), @Index("dataHora"),
+                   @Index(value = "idRemoto", unique = true)},
         foreignKeys = @ForeignKey(
                 entity = Membro.class,
                 parentColumns = "id",
@@ -29,6 +31,13 @@ public class MensagemChat {
     /** Caminho do ficheiro de áudio quando o tipo é VOZ; null nas mensagens de texto. */
     private String anexoUri;
 
+    /** Identificador do documento no Firestore. Null enquanto só existir neste telemóvel. */
+    private String idRemoto;
+
+    /** Falso enquanto a mensagem ainda não tiver subido para a nuvem. */
+    @ColumnInfo(defaultValue = "0")
+    private boolean sincronizado;
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
@@ -49,4 +58,10 @@ public class MensagemChat {
 
     public String getAnexoUri() { return anexoUri; }
     public void setAnexoUri(String anexoUri) { this.anexoUri = anexoUri; }
+
+    public String getIdRemoto() { return idRemoto; }
+    public void setIdRemoto(String idRemoto) { this.idRemoto = idRemoto; }
+
+    public boolean isSincronizado() { return sincronizado; }
+    public void setSincronizado(boolean sincronizado) { this.sincronizado = sincronizado; }
 }

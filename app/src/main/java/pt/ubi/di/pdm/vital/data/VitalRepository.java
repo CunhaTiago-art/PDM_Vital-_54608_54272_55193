@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.UUID;
 
 import pt.ubi.di.pdm.vital.data.dao.ChatDao;
 import pt.ubi.di.pdm.vital.data.dao.ComunidadeDao;
@@ -28,6 +29,7 @@ import pt.ubi.di.pdm.vital.data.model.MensagemChat;
 import pt.ubi.di.pdm.vital.data.model.MensagemComAutor;
 import pt.ubi.di.pdm.vital.data.model.MetricaSaude;
 import pt.ubi.di.pdm.vital.data.model.Nota;
+import pt.ubi.di.pdm.vital.data.model.PapelMembro;
 import pt.ubi.di.pdm.vital.data.model.Resposta;
 import pt.ubi.di.pdm.vital.data.model.ResumoDia;
 import pt.ubi.di.pdm.vital.data.model.TipoMensagem;
@@ -55,9 +57,11 @@ public class VitalRepository {
     private final ConsultaDao consultaDao;
     private final ChatDao chatDao;
     private final ComunidadeDao comunidadeDao;
+    private final SessionManager sessao;
 
     public VitalRepository(Context context) {
         bd = AppDatabase.getInstance(context);
+        sessao = new SessionManager(context);
         membroDao = bd.membroDao();
         medicamentoDao = bd.medicamentoDao();
         tomaDao = bd.registoTomaDao();
@@ -65,6 +69,39 @@ public class VitalRepository {
         consultaDao = bd.consultaDao();
         chatDao = bd.chatDao();
         comunidadeDao = bd.comunidadeDao();
+    }
+
+    public SessionManager getSessao() {
+        return sessao;
+    }
+
+    /**
+     * Quem souber falar com a nuvem regista-se aqui.
+     *
+     * A camada Room não conhece o Firebase: limita-se a avisar que há coisas novas
+     * por enviar. Assim a base de dados funciona na mesma sem rede, e trocar o
+     * Firestore por outra tecnologia não obriga a mexer em nada do que está aqui.
+     */
+    public interface Sincronizador {
+        void enviarPendentes();
+    }
+
+    private static volatile Sincronizador sincronizador;
+
+    public static void setSincronizador(Sincronizador s) {
+        sincronizador = s;
+    }
+
+    /** Avisa a camada de sincronização de que há conteúdo novo por enviar. */
+    private void notificarSincronizador() {
+        Sincronizador s = sincronizador;
+        if (s != null) {
+            try {
+                s.enviarPendentes();
+            } catch (Exception e) {
+                Log.e(TAG, "Falha ao avisar a sincronização", e);
+            }
+        }
     }
 
     /** Resultado devolvido numa leitura pontual feita fora da thread principal. */
@@ -315,7 +352,12 @@ public class VitalRepository {
             mensagem.setAnexoUri(anexoUri);
             mensagem.setDataHora(System.currentTimeMillis());
             mensagem.setLida(true); // as próprias mensagens já estão lidas
+            // O identificador global é gerado aqui, e não pedido ao servidor.
+            // Assim a linha local já o tem antes de a mensagem subir, e quando o
+            // Firestore nos devolve o nosso próprio documento sabemos reconhecê-lo.
+            mensagem.setIdRemoto(UUID.randomUUID().toString());
             chatDao.inserir(mensagem);
+            notificarSincronizador();
         });
     }
 
@@ -348,7 +390,9 @@ public class VitalRepository {
             duvida.setCategoria(categoria == null ? CategoriaDuvida.OUTRO : categoria);
             duvida.setDataHora(System.currentTimeMillis());
             duvida.setResolvida(false);
+            duvida.setIdRemoto(UUID.randomUUID().toString());
             comunidadeDao.inserirDuvida(duvida);
+            notificarSincronizador();
         });
     }
 
@@ -359,12 +403,121 @@ public class VitalRepository {
             resposta.setAutorId(autorId);
             resposta.setTexto(texto);
             resposta.setDataHora(System.currentTimeMillis());
+            resposta.setIdRemoto(UUID.randomUUID().toString());
             comunidadeDao.inserirResposta(resposta);
+            notificarSincronizador();
         });
     }
 
     public void marcarDuvidaResolvida(long duvidaId) {
         executar("marcar a dúvida como resolvida", () -> comunidadeDao.marcarResolvida(duvidaId));
+    }
+
+    // ==================================================================
+    //  IDENTIDADE E SINCRONIZAÇÃO
+    // ==================================================================
+
+    /**
+     * Devolve o id local do membro com esta identidade global, criando-o se ainda
+     * não existir neste telemóvel.
+     *
+     * É a peça central da sincronização: quando chega uma mensagem da nuvem escrita
+     * por alguém que este aparelho nunca viu, é preciso haver uma linha na tabela
+     * `membros` para a chave estrangeira da mensagem poder apontar para algum lado.
+     *
+     * Tem de ser chamado fora da thread principal.
+     */
+    public long garantirMembro(String uid, String nome, PapelMembro papel) {
+        Membro existente = membroDao.obterPorUid(uid);
+        if (existente != null) {
+            if (nome != null && !nome.equals(existente.getNome())) {
+                existente.setNome(nome);
+                membroDao.atualizar(existente);
+            }
+            return existente.getId();
+        }
+
+        // Pode já existir localmente sem uid: o caso da Ana que foi criada à mão
+        // no telemóvel do idoso e só mais tarde instalou a app no telemóvel dela.
+        Membro porNome = nome == null ? null : membroDao.obterPorNome(nome);
+        if (porNome != null && porNome.getUidRemoto() == null) {
+            membroDao.definirUid(porNome.getId(), uid);
+            return porNome.getId();
+        }
+
+        Membro novo = new Membro();
+        novo.setNome(nome == null ? "Alguém da família" : nome);
+        novo.setPapel(papel == null ? PapelMembro.CUIDADOR : papel);
+        novo.setUidRemoto(uid);
+        novo.setPodeVerHistorial(false);
+        novo.setRecebeAvisos(true);
+        return membroDao.inserir(novo);
+    }
+
+    /**
+     * Liga o perfil escolhido no ecrã de Entrada a uma linha da tabela `membros`
+     * e guarda o id na sessão, para a app saber quem está a usar o telemóvel.
+     */
+    public void prepararSessao(Resultado<Long> resultado) {
+        executar("preparar a sessão", () -> {
+            long id = sessao.getMembroId();
+            if (id == 0) {
+                id = garantirMembroLocal();
+                if (id != 0) {
+                    sessao.setMembroId(id);
+                }
+            }
+            if (resultado != null) {
+                resultado.aoObter(id);
+            }
+        });
+    }
+
+    /**
+     * Garante que existe um membro para quem está a usar o telemóvel, com ou sem nuvem.
+     *
+     * A identidade local nunca pode depender do Firebase: sem rede, sem Google Play
+     * Services ou sem código de família, a pessoa tem de conseguir escrever na mesma.
+     * Quando mais tarde houver ligação, o uid é colado a esta mesma linha pelo nome.
+     *
+     * Tem de ser chamado fora da thread principal.
+     */
+    public long garantirMembroLocal() {
+        String uid = sessao.getUidRemoto();
+        if (uid != null) {
+            return garantirMembro(uid, sessao.getNome(), sessao.getPapel());
+        }
+
+        String nome = sessao.getNome();
+        if (nome == null || nome.trim().isEmpty()) {
+            nome = sessao.getPerfil();
+        }
+
+        Membro existente = membroDao.obterPorNome(nome);
+        if (existente != null) {
+            return existente.getId();
+        }
+
+        // O perfil "Idoso" deve apanhar o idoso que já está na base de dados,
+        // mesmo que o nome escrito não seja exatamente igual ao que lá está.
+        if (sessao.isIdoso()) {
+            Membro idoso = membroDao.obterIdoso();
+            if (idoso != null) {
+                return idoso.getId();
+            }
+        }
+
+        Membro novo = new Membro();
+        novo.setNome(nome);
+        novo.setPapel(sessao.getPapel());
+        novo.setPodeVerHistorial(true);
+        novo.setRecebeAvisos(true);
+        return membroDao.inserir(novo);
+    }
+
+    /** Conteúdo escrito neste telemóvel que ainda está à espera de subir para a nuvem. */
+    public LiveData<Integer> contarPorSincronizar() {
+        return chatDao.contarPorSincronizar();
     }
 
     // ==================================================================

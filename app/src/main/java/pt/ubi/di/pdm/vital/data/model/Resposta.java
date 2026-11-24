@@ -1,5 +1,6 @@
 package pt.ubi.di.pdm.vital.data.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -7,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 /** Resposta de um membro da rede a uma dúvida. */
 @Entity(tableName = "respostas",
-        indices = {@Index("duvidaId"), @Index("autorId")},
+        indices = {@Index("duvidaId"), @Index("autorId"),
+                   @Index(value = "idRemoto", unique = true)},
         foreignKeys = {
                 @ForeignKey(entity = Duvida.class,
                         parentColumns = "id",
@@ -27,6 +29,13 @@ public class Resposta {
     private String texto;
     private long dataHora;
 
+    /** Identificador do documento no Firestore. Null enquanto só existir neste telemóvel. */
+    private String idRemoto;
+
+    /** Falso enquanto a resposta ainda não tiver subido para a nuvem. */
+    @ColumnInfo(defaultValue = "0")
+    private boolean sincronizado;
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
@@ -41,4 +50,10 @@ public class Resposta {
 
     public long getDataHora() { return dataHora; }
     public void setDataHora(long dataHora) { this.dataHora = dataHora; }
+
+    public String getIdRemoto() { return idRemoto; }
+    public void setIdRemoto(String idRemoto) { this.idRemoto = idRemoto; }
+
+    public boolean isSincronizado() { return sincronizado; }
+    public void setSincronizado(boolean sincronizado) { this.sincronizado = sincronizado; }
 }

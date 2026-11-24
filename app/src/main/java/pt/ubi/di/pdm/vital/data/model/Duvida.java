@@ -1,5 +1,6 @@
 package pt.ubi.di.pdm.vital.data.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -7,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 /** Pergunta colocada no ecrã "Dúvidas e ajuda". */
 @Entity(tableName = "duvidas",
-        indices = {@Index("autorId"), @Index("categoria"), @Index("dataHora")},
+        indices = {@Index("autorId"), @Index("categoria"), @Index("dataHora"),
+                   @Index(value = "idRemoto", unique = true)},
         foreignKeys = @ForeignKey(
                 entity = Membro.class,
                 parentColumns = "id",
@@ -24,6 +26,13 @@ public class Duvida {
     private CategoriaDuvida categoria;
     private long dataHora;
     private boolean resolvida;
+
+    /** Identificador do documento no Firestore. Null enquanto só existir neste telemóvel. */
+    private String idRemoto;
+
+    /** Falso enquanto a dúvida ainda não tiver subido para a nuvem. */
+    @ColumnInfo(defaultValue = "0")
+    private boolean sincronizado;
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -45,4 +54,10 @@ public class Duvida {
 
     public boolean isResolvida() { return resolvida; }
     public void setResolvida(boolean resolvida) { this.resolvida = resolvida; }
+
+    public String getIdRemoto() { return idRemoto; }
+    public void setIdRemoto(String idRemoto) { this.idRemoto = idRemoto; }
+
+    public boolean isSincronizado() { return sincronizado; }
+    public void setSincronizado(boolean sincronizado) { this.sincronizado = sincronizado; }
 }

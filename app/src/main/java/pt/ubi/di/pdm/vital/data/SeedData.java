@@ -250,6 +250,7 @@ public final class SeedData {
         mensagem.setDataHora(dataHora);
         mensagem.setTipo(TipoMensagem.TEXTO);
         mensagem.setLida(lida);
+        mensagem.setSincronizado(true); // dados de demonstração não sobem para a nuvem
         return mensagem;
     }
 
@@ -262,6 +263,7 @@ public final class SeedData {
         duvida.setCategoria(categoria);
         duvida.setDataHora(dataHora);
         duvida.setResolvida(resolvida);
+        duvida.setSincronizado(true); // dados de demonstração não sobem para a nuvem
         return duvida;
     }
 
@@ -271,6 +273,7 @@ public final class SeedData {
         resposta.setAutorId(autorId);
         resposta.setTexto(texto);
         resposta.setDataHora(dataHora);
+        resposta.setSincronizado(true); // dados de demonstração não sobem para a nuvem
         return resposta;
     }
 
