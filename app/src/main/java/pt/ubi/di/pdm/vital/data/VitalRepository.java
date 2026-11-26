@@ -410,7 +410,10 @@ public class VitalRepository {
     }
 
     public void marcarDuvidaResolvida(long duvidaId) {
-        executar("marcar a dúvida como resolvida", () -> comunidadeDao.marcarResolvida(duvidaId));
+        executar("marcar a dúvida como resolvida", () -> {
+            comunidadeDao.marcarResolvida(duvidaId);
+            notificarSincronizador();
+        });
     }
 
     // ==================================================================

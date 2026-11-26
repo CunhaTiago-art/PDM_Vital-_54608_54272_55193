@@ -52,7 +52,13 @@ public interface ComunidadeDao {
     @Query("SELECT * FROM duvidas WHERE id = :id")
     Duvida obterDuvidaPorId(long id);
 
-    @Query("UPDATE duvidas SET resolvida = 1 WHERE id = :id")
+    /**
+     * Marca a dúvida como resolvida e volta a pô-la na fila de envio.
+     * Como a sincronização escreve com document(id).set(), reenviar substitui
+     * o documento que já está na nuvem em vez de criar outro — por isso
+     * limpar o `sincronizado` é tudo o que é preciso para propagar a alteração.
+     */
+    @Query("UPDATE duvidas SET resolvida = 1, sincronizado = 0 WHERE id = :id")
     void marcarResolvida(long id);
 
     // ---------- Respostas ----------
