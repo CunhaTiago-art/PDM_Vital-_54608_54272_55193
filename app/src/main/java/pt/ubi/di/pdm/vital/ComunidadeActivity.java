@@ -30,6 +30,7 @@ public class ComunidadeActivity extends AppCompatActivity {
         TextView tvNomeIdoso = findViewById(R.id.tvNomeIdoso);
         TextView tvMensagensNovas = findViewById(R.id.tvMensagensNovas);
         TextView tvResumoConsultas = findViewById(R.id.tvResumoConsultas);
+        TextView tvResumoSaude = findViewById(R.id.tvResumoSaude);
 
         modelo.getIdoso().observe(this, idoso ->
                 tvNomeIdoso.setText(idoso == null ? "Sem idoso registado" : idoso.getNome()));
@@ -48,12 +49,18 @@ public class ComunidadeActivity extends AppCompatActivity {
                     : n + (n == 1 ? " próxima" : " próximas"));
         });
 
+        modelo.getUltimoBatimento().observe(this, batimento ->
+                tvResumoSaude.setText(batimento == null
+                        ? "Sem registos"
+                        : Math.round(batimento.getValor()) + " bpm · última medição"));
+
         findViewById(R.id.btnVoltarComunidade).setOnClickListener(v -> finish());
 
         abrir(R.id.cardHistorial, HistorialActivity.class);
         abrir(R.id.cardConsultas, ConsultasActivity.class);
         abrir(R.id.cardChat, ChatFamiliaActivity.class);
         abrir(R.id.cardDuvidas, DuvidasActivity.class);
+        abrir(R.id.cardSaude, MetricasActivity.class);
 
         findViewById(R.id.btnConvidarMembro).setOnClickListener(v ->
                 Toast.makeText(this,

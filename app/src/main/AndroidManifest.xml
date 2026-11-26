@@ -54,6 +54,7 @@
         <activity android:name=".MarcarConsultaActivity" android:exported="false" />
         <activity android:name=".ChatFamiliaActivity" android:exported="false" />
         <activity android:name=".DuvidasActivity" android:exported="false" />
+        <activity android:name=".MetricasActivity" android:exported="false" />
     </application>
 
 </manifest>

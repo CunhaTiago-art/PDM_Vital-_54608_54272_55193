@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import pt.ubi.di.pdm.vital.data.VitalRepository;
 import pt.ubi.di.pdm.vital.data.model.Membro;
+import pt.ubi.di.pdm.vital.data.model.MetricaSaude;
+import pt.ubi.di.pdm.vital.data.model.TipoMetrica;
 
 /** Contadores e identidade do ecrã Comunidade. */
 public class ComunidadeViewModel extends AndroidViewModel {
@@ -15,6 +17,7 @@ public class ComunidadeViewModel extends AndroidViewModel {
     private final LiveData<Membro> idoso;
     private final LiveData<Integer> mensagensPorLer;
     private final LiveData<Integer> consultasFuturas;
+    private final LiveData<MetricaSaude> ultimoBatimento;
 
     public ComunidadeViewModel(@NonNull Application aplicacao) {
         super(aplicacao);
@@ -23,6 +26,7 @@ public class ComunidadeViewModel extends AndroidViewModel {
         // As próprias mensagens não contam como por ler.
         mensagensPorLer = repositorio.contarMensagensPorLer(repositorio.getSessao().getMembroId());
         consultasFuturas = repositorio.contarConsultasFuturas();
+        ultimoBatimento = repositorio.observarUltimaMetrica(TipoMetrica.BATIMENTO);
     }
 
     public LiveData<Membro> getIdoso() {
@@ -35,5 +39,9 @@ public class ComunidadeViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getConsultasFuturas() {
         return consultasFuturas;
+    }
+
+    public LiveData<MetricaSaude> getUltimoBatimento() {
+        return ultimoBatimento;
     }
 }

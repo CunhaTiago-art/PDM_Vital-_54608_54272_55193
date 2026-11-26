@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="14dp">
+
+        <TextView
+            android:id="@+id/tvMetricaQuando"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="Hoje\n09:00"
+            android:textColor="@color/vital_navy"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMetricaTipo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_weight="1"
+            android:text="Batimento cardíaco"
+            android:textColor="@color/vital_navy"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvMetricaValor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="72 bpm"
+            android:textColor="@color/vital_green"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/vital_divider" />
+
+</LinearLayout>

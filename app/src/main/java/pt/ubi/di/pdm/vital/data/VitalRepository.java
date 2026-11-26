@@ -300,6 +300,10 @@ public class VitalRepository {
     //  MÉTRICAS DE SAÚDE
     // ==================================================================
 
+    public LiveData<List<MetricaSaude>> observarMetricas() {
+        return metricaDao.observarTodas();
+    }
+
     public LiveData<MetricaSaude> observarUltimaMetrica(TipoMetrica tipo) {
         return metricaDao.observarUltima(tipo.name());
     }
