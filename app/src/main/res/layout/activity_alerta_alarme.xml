@@ -102,6 +102,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirmarToma"
         android:layout_width="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:layout_height="76dp"
         android:layout_marginBottom="12dp"
         android:backgroundTint="@color/white"
@@ -119,6 +121,8 @@
         android:id="@+id/btnAdiarToma"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:layout_height="64dp"
         android:text="ADIAR 10 MINUTOS"
         android:textColor="@color/white"

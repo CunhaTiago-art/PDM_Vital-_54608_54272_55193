@@ -80,6 +80,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPerfilIdoso"
                     android:layout_width="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
                     android:layout_height="64dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
@@ -95,6 +97,8 @@
                     android:id="@+id/btnPerfilCuidador"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
                     android:layout_height="64dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
@@ -163,6 +167,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEntrarApp"
         android:layout_width="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:layout_height="72dp"
         android:backgroundTint="@color/vital_green"
         android:text="ENTRAR"
