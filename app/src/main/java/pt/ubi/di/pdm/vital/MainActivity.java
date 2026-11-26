@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import pt.ubi.di.pdm.vital.data.model.TomaDeHoje;
+import pt.ubi.di.pdm.vital.util.DataUtil;
 import pt.ubi.di.pdm.vital.ui.dashboard.DashboardViewModel;
 import pt.ubi.di.pdm.vital.ui.dashboard.TomasHojeAdapter;
 
@@ -40,14 +44,14 @@ public class MainActivity extends AppCompatActivity {
         TextView tvHora = findViewById(R.id.tvHoraToma);
         TextView tvNome = findViewById(R.id.tvNomeRemedio);
         TextView tvInstrucao = findViewById(R.id.tvInstrucaoRemedio);
-        View btnJaTomei = findViewById(R.id.btnJaTomeiDashboard);
+        MaterialButton btnJaTomei = findViewById(R.id.btnJaTomeiDashboard);
         View cardProxima = findViewById(R.id.cardProximaToma);
         RecyclerView rvHoje = findViewById(R.id.rvTomasHoje);
 
         tvData.setText(dataDeHoje());
 
         // ---------- Lista "Hoje" ----------
-        TomasHojeAdapter adaptador = new TomasHojeAdapter();
+        TomasHojeAdapter adaptador = new TomasHojeAdapter(this::perguntarSeConfirma);
         rvHoje.setLayoutManager(new LinearLayoutManager(this));
         rvHoje.setAdapter(adaptador);
         modelo.getTomasDeHoje().observe(this, adaptador::submeter);
@@ -63,15 +67,24 @@ public class MainActivity extends AppCompatActivity {
                 btnJaTomei.setVisibility(View.GONE);
                 return;
             }
-            tvHora.setText(pt.ubi.di.pdm.vital.util.DataUtil
-                    .formatarHora(toma.registo.getDataPrevista()));
+            tvHora.setText(DataUtil.formatarHora(toma.registo.getDataPrevista()));
             tvNome.setText(toma.getNomeCompleto());
             tvInstrucao.setText(toma.getDescricao());
             btnJaTomei.setVisibility(View.VISIBLE);
+            atualizarBotao(btnJaTomei, toma);
         });
 
         btnJaTomei.setOnClickListener(v -> {
             if (proxima == null) {
+                return;
+            }
+            // Segunda barreira, além do botão desativado: uma toma nunca é
+            // confirmada fora da sua janela, aconteça o que acontecer na interface.
+            if (!modelo.podeConfirmar(proxima)) {
+                Toast.makeText(this,
+                        "Ainda não são horas. A próxima toma é às "
+                                + DataUtil.formatarHora(proxima.registo.getDataPrevista()) + ".",
+                        Toast.LENGTH_LONG).show();
                 return;
             }
             modelo.confirmar(proxima.registo.getId());
@@ -95,6 +108,53 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, AlertaAlarmeActivity.class));
             return true;
         });
+    }
+
+    /**
+     * Tocar numa toma da lista "Hoje" permite confirmá-la mais tarde,
+     * incluindo uma que já tenha sido dada como falhada. Pede confirmação
+     * primeiro, porque é um toque fácil de dar sem querer.
+     */
+    private void perguntarSeConfirma(TomaDeHoje toma) {
+        if (!modelo.podeConfirmar(toma)) {
+            Toast.makeText(this,
+                    "Ainda não são horas desta toma.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String atraso = pt.ubi.di.pdm.vital.data.VitalRepository.descreverAtraso(
+                toma.registo.getDataPrevista(), System.currentTimeMillis());
+
+        String mensagem = "Marcar " + toma.getNomeCompleto() + " das "
+                + DataUtil.formatarHora(toma.registo.getDataPrevista()) + " como tomado?";
+        if (atraso != null) {
+            mensagem += "\n\nFicará registado " + atraso + ".";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmar toma")
+                .setMessage(mensagem)
+                .setNegativeButton("Cancelar", null)
+                .setPositiveButton("Sim, tomei", (d, w) -> modelo.confirmar(toma.registo.getId()))
+                .show();
+    }
+
+    /**
+     * O botão só fica disponível quando a toma está mesmo a chegar.
+     * Fora de horas mostra porquê, em vez de ficar apagado sem explicação —
+     * um botão cinzento e mudo não diz nada a quem o está a usar.
+     */
+    private void atualizarBotao(MaterialButton botao, TomaDeHoje toma) {
+        if (modelo.podeConfirmar(toma)) {
+            botao.setEnabled(true);
+            botao.setAlpha(1f);
+            botao.setText("✓  JÁ TOMEI");
+        } else {
+            botao.setEnabled(false);
+            botao.setAlpha(0.45f);
+            botao.setText("Ainda não são horas");
+        }
     }
 
     /** Cabeçalho do dashboard: "Qui, 26 nov". */

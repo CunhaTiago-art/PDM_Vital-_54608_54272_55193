@@ -17,6 +17,7 @@ import pt.ubi.di.pdm.vital.data.dao.MetricaSaudeDao;
 import pt.ubi.di.pdm.vital.data.dao.RegistoTomaDao;
 import pt.ubi.di.pdm.vital.data.model.CategoriaDuvida;
 import pt.ubi.di.pdm.vital.data.model.Consulta;
+import pt.ubi.di.pdm.vital.data.model.ConsultaComAcompanhante;
 import pt.ubi.di.pdm.vital.data.model.Duvida;
 import pt.ubi.di.pdm.vital.data.model.DuvidaResumo;
 import pt.ubi.di.pdm.vital.data.model.EstadoConsulta;
@@ -29,6 +30,7 @@ import pt.ubi.di.pdm.vital.data.model.MensagemChat;
 import pt.ubi.di.pdm.vital.data.model.MensagemComAutor;
 import pt.ubi.di.pdm.vital.data.model.MetricaSaude;
 import pt.ubi.di.pdm.vital.data.model.Nota;
+import pt.ubi.di.pdm.vital.data.model.RegistoToma;
 import pt.ubi.di.pdm.vital.data.model.PapelMembro;
 import pt.ubi.di.pdm.vital.data.model.Resposta;
 import pt.ubi.di.pdm.vital.data.model.ResumoDia;
@@ -47,7 +49,14 @@ public class VitalRepository {
     private static final String TAG = "VitalRepository";
 
     /** Janela de tolerância: passado este tempo sem confirmação, a toma conta como falhada. */
-    private static final long TOLERANCIA_MS = 2 * 60 * 60 * 1000L; // 2 horas
+    public static final long TOLERANCIA_MS = 2 * 60 * 60 * 1000L; // 2 horas
+
+    /**
+     * Margem, para um lado e para o outro, dentro da qual uma toma conta como
+     * feita a horas. Antes desta janela não se pode confirmar; depois dela
+     * pode-se, mas fica registado o atraso.
+     */
+    public static final long MARGEM_MS = 30 * 60 * 1000L; // 30 minutos
 
     private final AppDatabase bd;
     private final MembroDao membroDao;
@@ -114,17 +123,64 @@ public class VitalRepository {
     // ==================================================================
 
     public LiveData<TomaDeHoje> observarProximaToma() {
-        return tomaDao.observarProximaToma(System.currentTimeMillis());
+        return tomaDao.observarProximaToma(System.currentTimeMillis() - TOLERANCIA_MS);
+    }
+
+    /**
+     * Diz se uma toma já pode ser confirmada.
+     *
+     * Não se confirma medicação com horas de antecedência: ficaria registado que
+     * a pessoa tomou comprimidos que ainda não tomou, e quem olhasse para o
+     * historial era induzido em erro. Aceita-se meia hora antes da hora marcada.
+     */
+    public static boolean estaNaHora(long dataPrevista) {
+        return System.currentTimeMillis() >= dataPrevista - MARGEM_MS;
+    }
+
+    /**
+     * Nota a guardar quando a confirmação chega fora de horas.
+     * Devolve null quando a toma foi feita dentro da margem — nesse caso não há
+     * nada a assinalar e a coluna fica vazia.
+     */
+    public static String descreverAtraso(long dataPrevista, long dataReal) {
+        long atraso = dataReal - dataPrevista;
+        if (atraso <= MARGEM_MS) {
+            return null;
+        }
+        long minutos = atraso / 60_000L;
+        if (minutos < 60) {
+            return "com " + minutos + " min de atraso";
+        }
+        long horas = minutos / 60;
+        long resto = minutos % 60;
+        if (resto == 0) {
+            return "com " + horas + (horas == 1 ? " hora de atraso" : " horas de atraso");
+        }
+        return "com " + horas + "h" + String.format(java.util.Locale.ROOT, "%02d", resto)
+                + " de atraso";
     }
 
     public LiveData<List<TomaDeHoje>> observarTomasDeHoje() {
         return tomaDao.observarTomasEntre(DataUtil.inicioDeHoje(), DataUtil.fimDeHoje());
     }
 
-    /** Botão "JÁ TOMEI". */
+    /**
+     * Botão "JÁ TOMEI".
+     *
+     * Lê a hora prevista para calcular o atraso antes de gravar. A confirmação
+     * é sempre aceite depois da hora: uma toma tardia continua a ser uma toma,
+     * e bloqueá-la só faria com que a informação se perdesse.
+     */
     public void marcarComoTomada(long registoId) {
-        executar("marcar a toma", () ->
-                tomaDao.marcarComoTomada(registoId, System.currentTimeMillis()));
+        executar("marcar a toma", () -> {
+            RegistoToma registo = tomaDao.obterPorId(registoId);
+            if (registo == null) {
+                return;
+            }
+            long agora = System.currentTimeMillis();
+            tomaDao.marcarComoTomada(registoId, agora,
+                    descreverAtraso(registo.getDataPrevista(), agora));
+        });
     }
 
     /** Botão "ADIAR 10 MINUTOS" do ecrã de alarme. */
@@ -199,15 +255,31 @@ public class VitalRepository {
     }
 
     public LiveData<List<ResumoDia>> observarSemana() {
-        return tomaDao.observarResumoPorDia(DataUtil.inicioDaSemana(), DataUtil.fimDaSemana());
+        return observarSemana(0);
     }
 
     public LiveData<Integer> contarTomadasDaSemana() {
-        return tomaDao.contarTomadasEntre(DataUtil.inicioDaSemana(), DataUtil.fimDaSemana());
+        return contarTomadasDaSemana(0);
     }
 
     public LiveData<Integer> contarTomasDaSemana() {
-        return tomaDao.contarTotalEntre(DataUtil.inicioDaSemana(), DataUtil.fimDaSemana());
+        return contarTomasDaSemana(0);
+    }
+
+    /** deslocamento 0 = esta semana, -1 = a passada, e assim sucessivamente. */
+    public LiveData<List<ResumoDia>> observarSemana(int deslocamento) {
+        return tomaDao.observarResumoPorDia(
+                DataUtil.inicioDaSemana(deslocamento), DataUtil.fimDaSemana(deslocamento));
+    }
+
+    public LiveData<Integer> contarTomadasDaSemana(int deslocamento) {
+        return tomaDao.contarTomadasEntre(
+                DataUtil.inicioDaSemana(deslocamento), DataUtil.fimDaSemana(deslocamento));
+    }
+
+    public LiveData<Integer> contarTomasDaSemana(int deslocamento) {
+        return tomaDao.contarTotalEntre(
+                DataUtil.inicioDaSemana(deslocamento), DataUtil.fimDaSemana(deslocamento));
     }
 
     public LiveData<List<Nota>> observarNotas() {
@@ -269,6 +341,18 @@ public class VitalRepository {
 
     public LiveData<List<Consulta>> observarConsultasPassadas() {
         return consultaDao.observarPassadas(System.currentTimeMillis());
+    }
+
+    public LiveData<ConsultaComAcompanhante> observarProximaConsultaDetalhada() {
+        return consultaDao.observarProximaDetalhada(System.currentTimeMillis());
+    }
+
+    public LiveData<List<ConsultaComAcompanhante>> observarConsultasFuturasDetalhadas() {
+        return consultaDao.observarFuturasDetalhadas(System.currentTimeMillis());
+    }
+
+    public LiveData<List<ConsultaComAcompanhante>> observarConsultasPassadasDetalhadas() {
+        return consultaDao.observarPassadasDetalhadas(System.currentTimeMillis());
     }
 
     public LiveData<Integer> contarConsultasFuturas() {

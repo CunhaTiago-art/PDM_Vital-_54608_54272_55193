@@ -41,15 +41,21 @@ public interface RegistoTomaDao {
             + "ORDER BY r.dataPrevista ASC")
     LiveData<List<TomaDeHoje>> observarTomasEntre(long inicio, long fim);
 
-    /** Cartão "PRÓXIMA TOMA": a primeira toma por confirmar a partir de agora. */
+    /**
+     * Cartão "PRÓXIMA TOMA": a primeira toma por confirmar.
+     *
+     * O limite é `desde`, e não o instante atual, para que uma toma cuja hora
+     * acabou de passar continue a aparecer e possa ser confirmada. Sem isto,
+     * chegar cinco minutos atrasado fazia a toma desaparecer do ecrã.
+     */
     @Query("SELECT r.*, m.nome AS nome, m.dosagem AS dosagem, "
             + "m.quantidadePorToma AS quantidadePorToma, m.instrucoes AS instrucoes, "
             + "m.fotoUri AS fotoUri "
             + "FROM registo_tomas r "
             + "INNER JOIN medicamentos m ON m.id = r.medicamentoId "
-            + "WHERE r.estado IN ('PENDENTE', 'ADIADA') AND r.dataPrevista >= :agora "
+            + "WHERE r.estado IN ('PENDENTE', 'ADIADA') AND r.dataPrevista >= :desde "
             + "ORDER BY r.dataPrevista ASC LIMIT 1")
-    LiveData<TomaDeHoje> observarProximaToma(long agora);
+    LiveData<TomaDeHoje> observarProximaToma(long desde);
 
     /** Versão síncrona da próxima toma, para o AlarmManager agendar o alarme seguinte. */
     @Query("SELECT * FROM registo_tomas "
@@ -62,9 +68,16 @@ public interface RegistoTomaDao {
 
     // ---------- Ações do idoso ----------
 
-    /** Botão "JÁ TOMEI". */
-    @Query("UPDATE registo_tomas SET estado = 'TOMADA', dataReal = :agora WHERE id = :id")
-    void marcarComoTomada(long id, long agora);
+    /**
+     * Botão "JÁ TOMEI".
+     *
+     * Guarda a hora a que foi mesmo confirmada e, quando é fora de horas,
+     * uma nota com o atraso. Uma toma tardia continua a ser uma toma — o que
+     * não pode acontecer é ficar registada como se tivesse sido a horas.
+     */
+    @Query("UPDATE registo_tomas SET estado = 'TOMADA', dataReal = :agora, "
+            + "observacao = :observacao WHERE id = :id")
+    void marcarComoTomada(long id, long agora, String observacao);
 
     /** Botão "ADIAR 10 MINUTOS" do ecrã de alarme. */
     @Query("UPDATE registo_tomas SET estado = 'ADIADA', dataPrevista = :novaHora WHERE id = :id")
@@ -104,7 +117,9 @@ public interface RegistoTomaDao {
     @Query("SELECT 'TOMA' AS tipo, "
             + "       m.nome || ' ' || IFNULL(m.dosagem, '') AS titulo, "
             + "       CASE r.estado "
-            + "            WHEN 'TOMADA'  THEN 'Tomado' "
+            + "            WHEN 'TOMADA'  THEN CASE WHEN IFNULL(r.observacao, '') = '' "
+            + "                                     THEN 'Tomado' "
+            + "                                     ELSE 'Tomado · ' || r.observacao END "
             + "            WHEN 'FALHADA' THEN 'Não tomado' "
             + "            WHEN 'ADIADA'  THEN 'Adiado' "
             + "            ELSE 'Pendente' END AS subtitulo, "

@@ -6,6 +6,19 @@
          Os dados clínicos nunca saem do aparelho. -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--
+        A partir do Android 11, uma aplicação não consegue ver que outras estão
+        instaladas sem o declarar aqui. Sem este bloco, resolveActivity() devolve
+        null para o marcador telefónico mesmo quando ele existe, e a app conclui
+        erradamente que o aparelho não faz chamadas.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+    </queries>
+
     <application
         android:name=".VitalApp"
         android:allowBackup="true"

@@ -33,8 +33,18 @@ public class DashboardViewModel extends AndroidViewModel {
         return tomasDeHoje;
     }
 
+    /** Verdadeiro quando a toma já pode ser confirmada (não falta mais de meia hora). */
+    public boolean podeConfirmar(TomaDeHoje toma) {
+        return toma != null && VitalRepository.estaNaHora(toma.registo.getDataPrevista());
+    }
+
     /** Botão "JÁ TOMEI": grava a confirmação com a hora a que foi mesmo tomada. */
     public void confirmar(long registoId) {
         repositorio.marcarComoTomada(registoId);
+    }
+
+    /** Botão "ADIAR 10 MINUTOS" do ecrã de alarme. */
+    public void adiar(long registoId, int minutos) {
+        repositorio.adiarToma(registoId, minutos);
     }
 }

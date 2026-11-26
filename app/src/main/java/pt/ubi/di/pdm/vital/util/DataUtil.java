@@ -76,14 +76,43 @@ public final class DataUtil {
 
     /** Primeiro milissegundo da segunda-feira da semana em curso. */
     public static long inicioDaSemana() {
-        LocalDate hoje = LocalDate.now();
-        LocalDate segunda = hoje.minusDays(hoje.getDayOfWeek().getValue() - 1);
-        return paraMillis(segunda.atStartOfDay());
+        return inicioDaSemana(0);
     }
 
     /** Último milissegundo do domingo da semana em curso. */
     public static long fimDaSemana() {
-        return inicioDaSemana() + 7 * 86_400_000L - 1;
+        return fimDaSemana(0);
+    }
+
+    /**
+     * Segunda-feira de uma semana relativa à atual.
+     * deslocamento 0 = esta semana, -1 = a passada, 1 = a seguinte.
+     */
+    public static long inicioDaSemana(int deslocamento) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.minusDays(hoje.getDayOfWeek().getValue() - 1)
+                .plusWeeks(deslocamento);
+        return paraMillis(segunda.atStartOfDay());
+    }
+
+    public static long fimDaSemana(int deslocamento) {
+        return inicioDaSemana(deslocamento) + 7 * 86_400_000L - 1;
+    }
+
+    /** "Esta semana", "Semana passada" ou "23 nov – 29 nov". */
+    public static String descreverSemana(int deslocamento) {
+        if (deslocamento == 0) {
+            return "Esta semana";
+        }
+        if (deslocamento == -1) {
+            return "Semana passada";
+        }
+        if (deslocamento == 1) {
+            return "Próxima semana";
+        }
+        long inicio = inicioDaSemana(deslocamento);
+        long fim = inicioDaSemana(deslocamento) + 6 * 86_400_000L;
+        return formatarDataCurta(inicio) + " – " + formatarDataCurta(fim);
     }
 
     /** Junta uma data e uma hora em minutos desde a meia-noite. */

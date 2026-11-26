@@ -29,7 +29,17 @@ public class TomasHojeAdapter extends RecyclerView.Adapter<TomasHojeAdapter.Linh
     /** Dentro de quanto tempo uma toma pendente passa a mostrar "Em breve". */
     private static final long EM_BREVE_MS = 60 * 60 * 1000L; // 1 hora
 
+    /** Avisa a activity de que o utilizador tocou numa linha da lista. */
+    public interface AoTocar {
+        void aoTocar(TomaDeHoje toma);
+    }
+
     private final List<TomaDeHoje> tomas = new ArrayList<>();
+    private final AoTocar escuta;
+
+    public TomasHojeAdapter(AoTocar escuta) {
+        this.escuta = escuta;
+    }
 
     public void submeter(List<TomaDeHoje> novas) {
         tomas.clear();
@@ -72,6 +82,14 @@ public class TomasHojeAdapter extends RecyclerView.Adapter<TomasHojeAdapter.Linh
 
         holder.estado.setText(texto);
         holder.estado.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), cor));
+
+        // Uma toma já confirmada não se volta a confirmar; as outras sim,
+        // para que uma toma esquecida possa ser registada mais tarde.
+        boolean confirmavel = estado != EstadoToma.TOMADA;
+        holder.itemView.setClickable(confirmavel);
+        holder.itemView.setOnClickListener(confirmavel && escuta != null
+                ? v -> escuta.aoTocar(toma)
+                : null);
     }
 
     @Override

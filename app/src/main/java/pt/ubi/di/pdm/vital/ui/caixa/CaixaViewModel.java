@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import pt.ubi.di.pdm.vital.data.VitalRepository;
+import pt.ubi.di.pdm.vital.data.model.Medicamento;
 import pt.ubi.di.pdm.vital.data.model.MedicamentoComHorarios;
 
 /** Liga a Caixa de Remédios à base de dados. */
@@ -34,5 +35,18 @@ public class CaixaViewModel extends AndroidViewModel {
     /** Suspende um medicamento sem apagar o historial de tomas já registado. */
     public void suspender(long medicamentoId) {
         repositorio.desativarMedicamento(medicamentoId);
+    }
+
+    /** Um medicamento com os seus horários, para preencher o formulário de edição. */
+    public LiveData<MedicamentoComHorarios> observarUm(long id) {
+        return repositorio.observarMedicamento(id);
+    }
+
+    /**
+     * Grava o medicamento e os horários numa só transação, e gera logo
+     * as tomas dos próximos dias a partir da nova prescrição.
+     */
+    public void guardar(Medicamento medicamento, List<Integer> minutosDosHorarios) {
+        repositorio.guardarMedicamento(medicamento, minutosDosHorarios);
     }
 }

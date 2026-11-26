@@ -10,6 +10,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import pt.ubi.di.pdm.vital.data.model.Consulta;
+import pt.ubi.di.pdm.vital.data.model.ConsultaComAcompanhante;
 
 /** Acesso às consultas (ecrãs Consultas e Marcar Consulta). */
 @Dao
@@ -58,4 +59,26 @@ public interface ConsultaDao {
     @Query("UPDATE consultas SET estado = 'REALIZADA' "
             + "WHERE estado = 'AGENDADA' AND dataHora < :limite")
     int fecharConsultasPassadas(long limite);
+
+    // ---------- Com o nome de quem acompanha ----------
+    // LEFT JOIN e não INNER JOIN: uma consulta sem acompanhante definido
+    // tem de continuar a aparecer na lista.
+
+    @Query("SELECT c.*, m.nome AS acompanhanteNome FROM consultas c "
+            + "LEFT JOIN membros m ON m.id = c.acompanhanteId "
+            + "WHERE c.estado = 'AGENDADA' AND c.dataHora >= :agora "
+            + "ORDER BY c.dataHora ASC LIMIT 1")
+    LiveData<ConsultaComAcompanhante> observarProximaDetalhada(long agora);
+
+    @Query("SELECT c.*, m.nome AS acompanhanteNome FROM consultas c "
+            + "LEFT JOIN membros m ON m.id = c.acompanhanteId "
+            + "WHERE c.estado = 'AGENDADA' AND c.dataHora >= :agora "
+            + "ORDER BY c.dataHora ASC")
+    LiveData<List<ConsultaComAcompanhante>> observarFuturasDetalhadas(long agora);
+
+    @Query("SELECT c.*, m.nome AS acompanhanteNome FROM consultas c "
+            + "LEFT JOIN membros m ON m.id = c.acompanhanteId "
+            + "WHERE c.dataHora < :agora OR c.estado <> 'AGENDADA' "
+            + "ORDER BY c.dataHora DESC")
+    LiveData<List<ConsultaComAcompanhante>> observarPassadasDetalhadas(long agora);
 }

@@ -70,18 +70,51 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSemanaAnterior"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="56dp"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="0dp"
+                    android:text="‹"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
                 <TextView
+                    android:id="@+id/tvEtiquetaSemana"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="Esta semana"
                     android:textColor="@color/vital_gray"
                     android:textSize="16sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSemanaSeguinte"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="56dp"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="0dp"
+                    android:text="›"
+                    android:textColor="@color/vital_navy"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTotalTomasSemana"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:text="18 de 21 tomas"
                     android:textColor="@color/vital_navy"
                     android:textSize="20sp"
