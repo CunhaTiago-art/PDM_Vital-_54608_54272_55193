@@ -1,0 +1,135 @@
+rules_version = '2';
+
+// Regras de segurança do Firestore — Vital+
+//
+// A nuvem guarda apenas conversa: mensagens de chat, dúvidas e respostas.
+// Os dados clínicos (medicação, tomas, métricas de saúde, consultas e notas)
+// nunca saem do telemóvel, por isso não existem aqui e não há nada a proteger.
+//
+// Modelo de acesso: a aplicação usa autenticação anónima, logo cada instalação
+// tem um uid próprio mas ninguém tem nome nem palavra-passe. O que separa uma
+// família de outra é o código de família, que funciona como segredo partilhado.
+//
+// Limitação assumida: quem souber o código de uma família consegue ler a
+// conversa dessa família. Para o âmbito deste trabalho é aceitável, porque o
+// código é escolhido pelos próprios e não há dados clínicos envolvidos. Uma
+// versão de produção substituiria isto por contas reais e por uma lista de
+// membros autorizados guardada no servidor.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Funções auxiliares ----------
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    // Impede escrever em nome de outra pessoa: o autor do documento tem de
+    // ser quem está autenticado.
+    function souOAutor() {
+      return autenticado()
+             && request.resource.data.autorUid == request.auth.uid;
+    }
+
+    function donoDoDocumento() {
+      return autenticado() && resource.data.autorUid == request.auth.uid;
+    }
+
+    function textoValido(valor, maximo) {
+      return valor is string && valor.size() > 0 && valor.size() <= maximo;
+    }
+
+    function opcional(valor, maximo) {
+      return valor == null || (valor is string && valor.size() <= maximo);
+    }
+
+    // Campos comuns a tudo o que a aplicação envia.
+    function autorBemFormado() {
+      return textoValido(request.resource.data.autorUid, 128)
+             && textoValido(request.resource.data.autorNome, 80)
+             && textoValido(request.resource.data.autorPapel, 20)
+             && request.resource.data.dataHora is int
+             && request.resource.data.dataHora > 0;
+    }
+
+    // ---------- Famílias ----------
+
+    match /familias/{codigoFamilia} {
+
+      // O documento da família não guarda campos: serve apenas de pasta para
+      // as subcoleções. Ninguém lhe escreve, por isso fica fechado.
+      allow read, write: if false;
+
+      // ---------- Mensagens de chat ----------
+
+      match /mensagens/{mensagemId} {
+
+        allow read: if autenticado();
+
+        allow create: if souOAutor()
+                      && autorBemFormado()
+                      && textoValido(request.resource.data.texto, 2000)
+                      && request.resource.data.tipo in ['TEXTO', 'VOZ'];
+
+        // Reenviar a mesma mensagem depois de uma falha de rede escreve por
+        // cima do documento. Só o próprio autor o pode fazer.
+        allow update: if donoDoDocumento() && souOAutor();
+
+        // Uma mensagem enviada não se apaga: o historial da conversa é um
+        // registo, e apagar deixaria as outras pessoas sem contexto.
+        allow delete: if false;
+      }
+
+      // ---------- Dúvidas ----------
+
+      match /duvidas/{duvidaId} {
+
+        allow read: if autenticado();
+
+        allow create: if souOAutor()
+                      && autorBemFormado()
+                      && textoValido(request.resource.data.titulo, 300)
+                      && opcional(request.resource.data.descricao, 2000)
+                      && request.resource.data.categoria in
+                           ['ALARMES', 'MEDICACAO', 'USAR_APP', 'OUTRO']
+                      && request.resource.data.resolvida is bool;
+
+        // Qualquer pessoa da família pode marcar uma dúvida como resolvida —
+        // muitas vezes quem responde não é quem perguntou. Mas o conteúdo da
+        // pergunta não pode ser reescrito depois de publicada.
+        allow update: if autenticado()
+                      && request.resource.data.autorUid == resource.data.autorUid
+                      && request.resource.data.titulo == resource.data.titulo
+                      && request.resource.data.dataHora == resource.data.dataHora
+                      && request.resource.data.resolvida is bool;
+
+        allow delete: if false;
+      }
+
+      // ---------- Respostas ----------
+
+      match /respostas/{respostaId} {
+
+        allow read: if autenticado();
+
+        allow create: if souOAutor()
+                      && autorBemFormado()
+                      && textoValido(request.resource.data.texto, 2000)
+                      && textoValido(request.resource.data.duvidaRemotaId, 128);
+
+        allow update: if donoDoDocumento() && souOAutor();
+
+        allow delete: if false;
+      }
+    }
+
+    // ---------- Tudo o resto ----------
+    // Nada fora de /familias é usado pela aplicação. Fechar explicitamente
+    // evita que uma coleção criada por engano fique acessível a toda a gente.
+
+    match /{documento=**} {
+      allow read, write: if false;
+    }
+  }
+}
