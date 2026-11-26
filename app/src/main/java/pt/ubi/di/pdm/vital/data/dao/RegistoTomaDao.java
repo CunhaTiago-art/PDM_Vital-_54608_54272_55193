@@ -148,4 +148,14 @@ public interface RegistoTomaDao {
 
     @Query("SELECT MAX(dataPrevista) FROM registo_tomas")
     Long obterUltimaDataGerada();
+
+    /**
+     * Versão síncrona da lista de tomas de um intervalo.
+     * Serve ao agendamento de alarmes e aos testes, que não têm ciclo de vida
+     * de ecrã para observar um LiveData.
+     */
+    @Query("SELECT * FROM registo_tomas "
+            + "WHERE dataPrevista BETWEEN :inicio AND :fim "
+            + "ORDER BY dataPrevista ASC")
+    List<RegistoToma> listarEntre(long inicio, long fim);
 }
